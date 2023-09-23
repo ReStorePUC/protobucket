@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package service.payment;
+
+option go_package = "github.com/ReStorePUC/protobucket/services/payment";
+
+service Payment {
+  rpc CreatePayment(CreatePaymentRequest) returns (CreatePaymentResponse) {};
+}
+
+message Item {
+    string title = 1;
+    float quantity = 2;
+    float unit_price = 3;
+}
+
+message Payer {
+  string cpf = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message CreatePaymentRequest {
+  repeated Item items = 1;
+    Payer payer = 2;
+}
+
+message CreatePaymentResponse {
+  string id = 1;
+}
