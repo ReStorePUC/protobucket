@@ -22,7 +22,7 @@ message Payer {
 
 message CreatePaymentRequest {
   repeated Item items = 1;
-    Payer payer = 2;
+  Payer payer = 2;
 }
 
 message CreatePaymentResponse {
