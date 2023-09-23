@@ -14,5 +14,5 @@ message GetUserRequest {
 
 message GetUserResponse {
   string id = 1;
-  string email = 2;
+  bool isAdmin = 2;
 }
