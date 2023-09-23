@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package service.user;
 
-option go_package = "github.com/restore/protobucket/services/user";
+option go_package = "github.com/ReStorePUC/protobucket/services/user";
 
 service User {
   rpc GetUser(GetUserRequest) returns (GetUserResponse) {};
