@@ -14,15 +14,8 @@ message Item {
     float unit_price = 3;
 }
 
-message Payer {
-  string cpf = 1;
-  string name = 2;
-  string email = 3;
-}
-
 message CreatePaymentRequest {
   repeated Item items = 1;
-  Payer payer = 2;
 }
 
 message CreatePaymentResponse {
