@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package service.product;
+
+option go_package = "github.com/ReStorePUC/protobucket/services/product";
+
+service Product {
+  rpc GetProduct(GetProductRequest) returns (GetProductResponse) {};
+}
+
+message GetProductRequest {
+    string id = 1;
+}
+
+message Image {
+  int32 id = 1;
+  string image_path = 2;
+  int32 product_id = 3;
+}
+
+message GetProductResponse {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    string categories = 4;
+    string size = 5;
+    float price = 6;
+    float tax = 7;
+    bool available = 8;
+    int32 store_id = 9;
+    repeated Image images = 10;
+}
