@@ -19,6 +19,7 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductClient interface {
 	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductResponse, error)
+	UnavailableProduct(ctx context.Context, in *UnavailableProductRequest, opts ...grpc.CallOption) (*UnavailableProductResponse, error)
 }
 
 type productClient struct {
@@ -38,11 +39,21 @@ func (c *productClient) GetProduct(ctx context.Context, in *GetProductRequest, o
 	return out, nil
 }
 
+func (c *productClient) UnavailableProduct(ctx context.Context, in *UnavailableProductRequest, opts ...grpc.CallOption) (*UnavailableProductResponse, error) {
+	out := new(UnavailableProductResponse)
+	err := c.cc.Invoke(ctx, "/service.product.Product/UnavailableProduct", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServer is the server API for Product service.
 // All implementations must embed UnimplementedProductServer
 // for forward compatibility
 type ProductServer interface {
 	GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error)
+	UnavailableProduct(context.Context, *UnavailableProductRequest) (*UnavailableProductResponse, error)
 	mustEmbedUnimplementedProductServer()
 }
 
@@ -52,6 +63,9 @@ type UnimplementedProductServer struct {
 
 func (UnimplementedProductServer) GetProduct(context.Context, *GetProductRequest) (*GetProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
+}
+func (UnimplementedProductServer) UnavailableProduct(context.Context, *UnavailableProductRequest) (*UnavailableProductResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnavailableProduct not implemented")
 }
 func (UnimplementedProductServer) mustEmbedUnimplementedProductServer() {}
 
@@ -84,6 +98,24 @@ func _Product_GetProduct_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Product_UnavailableProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnavailableProductRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).UnavailableProduct(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/service.product.Product/UnavailableProduct",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).UnavailableProduct(ctx, req.(*UnavailableProductRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Product_ServiceDesc is the grpc.ServiceDesc for Product service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +126,10 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetProduct",
 			Handler:    _Product_GetProduct_Handler,
+		},
+		{
+			MethodName: "UnavailableProduct",
+			Handler:    _Product_UnavailableProduct_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
